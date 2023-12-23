@@ -10,19 +10,25 @@ services:
       - db
   db:
     image: mysql:5.7
-    volumes:
-      - ./mysql-data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: UNAmuychingona123.
-      MYSQL_DATABASE: forum
+      MYSQL_ROOT_PASSWORD: UNAmuychingona123.   # Tu contraseña actual de root
+      MYSQL_USER: mike                      # Nuevo usuario
+      MYSQL_PASSWORD: UNAmuychingona123.       # Contraseña para el nuevo usuario
+      MYSQL_DATABASE: forum                 # Nombre de la base de datos
     ports:
       - "3306:3306"
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOST: db
+      PMA_USER: mike
+      PMA_PASSWORD: UNAmuychingona123.
     ports:
       - "8083:80"
+    depends_on:
+      - db
+
   nginx:
     image: nginx:latest
     ports:
