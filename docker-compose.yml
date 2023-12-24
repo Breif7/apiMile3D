@@ -11,10 +11,10 @@ services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: UNAmuychingona123.   # Tu contraseña actual de root
-      MYSQL_USER: mike                      # Nuevo usuario
-      MYSQL_PASSWORD: UNAmuychingona123.       # Contraseña para el nuevo usuario
-      MYSQL_DATABASE: forum                 # Nombre de la base de datos
+      MYSQL_ROOT_PASSWORD: UNAmuychingona123.
+      MYSQL_USER: mike 
+      MYSQL_PASSWORD: UNAmuychingona123.    
+      MYSQL_DATABASE: forum
     ports:
       - "3306:3306"
 
