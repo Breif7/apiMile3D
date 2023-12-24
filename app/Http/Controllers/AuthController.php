@@ -4,20 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+        public function login(Request $request)
     {
+        Log::info('Login attempt', $request->only('email'));
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+            $user = Auth::user();
+            $token = $user->createToken('authToken')->plainTextToken;
+            Log::info('Inicio de sesion exitoso');
 
-            return response()->json(['message' => 'Logged in successfully']);
+            return response()->json(['message' => 'Logged in successfully', 'token' => $token]);
         }
 
         return response()->json(['error' => 'The provided credentials do not match our records.'], 401);
