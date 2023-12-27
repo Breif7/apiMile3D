@@ -17,12 +17,13 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('/articles', [ArticleController::class, 'index']);
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
-
-Route::get('/articles', [ArticleController::class, 'index']);
-Route::get('/products', [ProductController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/register', [RegisterController::class, 'register']);

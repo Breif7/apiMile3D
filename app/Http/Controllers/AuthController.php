@@ -24,19 +24,29 @@ class AuthController extends Controller
             $token = $user->createToken('authToken')->plainTextToken;
             Log::info('Inicio de sesion exitoso');
 
-            return response()->json(['message' => 'Logged in successfully', 'token' => $token]);
+            return response()->json([
+                'message' => 'Logged in successfully',
+                'token' => $token,
+                'user' => [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ]
+            ]);
         }
 
         return response()->json(['error' => 'The provided credentials do not match our records.'], 401);
     }
 
         public function logout(Request $request)
-    {
-        Auth::logout();
+            {
+                $user = $request->user();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+                if ($user) {
+                    $user->tokens()->delete();
+                    return response()->json(['message' => 'Successfully logged out']);
+                } else {
+                    return response()->json(['error' => 'No authenticated user'], 401);
+                }
+            }
 
-        return response()->json(['message' => 'Successfully logged out']);
-    }
 }
